@@ -1,0 +1,293 @@
+{\rtf1\mac\ansicpg10000\cocoartf824\cocoasubrtf420
+{\fonttbl\f0\fswiss\fcharset77 Helvetica-Bold;\f1\fswiss\fcharset77 Helvetica;\f2\fnil\fcharset77 Monaco;
+}
+{\colortbl;\red255\green255\blue255;\red0\green0\blue0;\red0\green0\blue191;\red191\green0\blue0;
+\red191\green0\blue0;\red0\green115\blue0;\red96\green96\blue96;\red0\green0\blue191;\red0\green115\blue0;
+\red96\green96\blue96;}
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\ql\qnatural\pardirnatural
+
+\f0\b\fs38 \cf2 MEAPSoft
+\f1\b0\fs18 \
+\pard\pardeftab560\ql\qnatural
+\cf2 \
+
+\fs26 The MEAPSoft SuperCollider Object was created to give users a framework for accessing the data provided by MEAPSoft, an open-source program for segmentation, feature extraction, and recomposition, written at Columbia University in a joint collaboration between the Computer Music Center and LabROSA.  For information about MEAPSoft, and to obtain the software, go to: "http://labrosa.ee.columbia.edu/meapsoft/index.php".
+\fs18 \
+\
+
+\fs24 see also (for most of this you really should look at):  [MEAPChunk]\
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\ql\qnatural
+\cf2 \
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\ql\qnatural
+
+\f0\b \cf2 \ul \ulc0 Creation:
+\f1\b0 \ulnone \
+\
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\ql\qnatural
+
+\f0\b \cf2 *new
+\f1\b0 \
+\
+Creates an empty MEAPSoft Object.\
+\
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\ql\qnatural
+
+\f2\fs18 \cf2 m = \cf3 MEAPSoft\cf2 .new;
+\f1\fs24 \
+\
+
+\f0\b \ul Loading Data:\
+\
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\ql\qnatural
+\cf2 \ulnone loadEDL\ul \
+\
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\ql\qnatural
+
+\f1\b0 \cf2 \ulnone Opens a CocoaDialog box that allows the user to specify a MEAPSoft EDL file to be loaded.  The EDL file contains a resorted version of the segmented sound file that has been resorted by the MEAPSoft Composer.\
+
+\f2\fs18 \
+m.loadEDL;
+\f1\fs24 \
+\
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\ql\qnatural
+
+\f0\b \cf2 loadFEAT\
+\
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\ql\qnatural
+
+\f1\b0 \cf2 Opens a CocoaDialog box that allows the user to specify a MEAPSoft FEAT file to be loaded.\
+
+\f2\fs18 \
+m.loadFEAT;
+\f1\fs24 \
+\
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\ql\qnatural
+
+\f0\b \cf2 loadSEG\
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\ql\qnatural
+
+\f1\b0 \cf2 \
+Opens a CocoaDialog box that allows the user to specify a MEAPSoft SEG file to be loaded.\
+
+\f2\fs18 \
+m.loadSEG;
+\f1\fs24 \
+\
+
+\f0\b \ul Accessing:\
+
+\f1\b0 \ulnone \
+\pard\pardeftab560\ql\qnatural
+\cf0 After using MEAPSoft to segment and extract features from a file, you can use the data in SuperCollider in many ways.  \cf2 Each MEAPSoft Object contains a number of lists that point to MEAPChunk objects, which contain juicy data just waiting for consumption.  Please see the MEAPChunk help file to understand the MEAPChunk Object.
+\f2\fs18 	
+\f1\fs24 \
+\
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\ql\qnatural
+
+\f0\b \cf2 edlList\
+\
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\ql\qnatural
+
+\f1\b0 \cf2 Contains a list pointing the MEAPChunks in the order in which they are found in the MEAPSoft EDL file\
+\pard\pardeftab560\ql\qnatural
+\cf2 \
+
+\f2\fs18 m = \cf3 MEAPSoft\cf2 .new;		\cf4 //create a new MEAPSoft object\cf2 \
+m.loadEDL;			\cf5 //load a MEAPSoft EDL file (these are the files created by the MEAPSoft composer\cf2 \
+\
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\ql\qnatural\pardirnatural
+\cf2 m.edlList.size;		\cf5 //how many elements are in the edlList\cf2 \
+\
+\cf5 //check out how MEAPSoft has reorganized the segmented file\cf2 \
+\pard\pardeftab560\ql\qnatural
+\cf2 m.edlList.do\{\cf3 arg\cf2  meapChunk, i;\
+	(meapChunk.fileName+meapChunk.edlTimes[i].asString+meapChunk.segTime.asString).postln;\
+\};\
+\
+\cf5 //or just look at one MEAPChunk\cf2 \
+m.edlList[0].edlTimes[0].postln;\
+m.edlList[0].segTime.postln;
+\f1\fs24 \
+\
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\ql\qnatural
+
+\f0\b \cf2 featDict
+\f1\b0 \
+\pard\pardeftab560\ql\qnatural
+\cf2 \
+Contains a Dictionary of sorted feature lists.  The current features extracted by MEAPSoft are:\
+\
+
+\f2\fs18 AvgChroma - currently not sorted\
+AvgChromaScalar\
+AvgChunkPower \
+AvgFreqSimple \
+AvgMelSpec - currently not sorted\
+AvgMFCC - currently not sorted\
+AvgPitchSimple\
+AvgSpec - currently not sorted\
+AvgSpecCentroid\
+AvgSpecFlatness\
+ChunkLength\
+ChunkStartTime\
+SpectralStability
+\f1\fs24 \
+\
+AvgMelSpec, AvgMFCC, and AvgSpec are currently not sorted because they contain multi-element arrays\
+\
+
+\f2\fs18 m = \cf3 MEAPSoft\cf2 .new;		\cf4 //create a new MEAPSoft object\cf2 \
+m.loadFEAT;			\cf5 //load a MEAPSoft FEATure file (these hold all of the features extracted from the sound file)\cf2 \
+\
+\cf5 //check out how the chunks have been reorder so that they are in the order of AveChunkPower\cf2 \
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\ql\qnatural\pardirnatural
+\cf2 m.featDict[\cf6 \\AvgChunkPower\cf2 ].do\{\cf3 arg\cf2  meapChunk, i; (meapChunk.segTime.asString+meapChunk.featDict[\cf6 \\AvgChunkPower\cf2 ].asString).postln;\};\
+\pard\pardeftab560\ql\qnatural
+\cf2 \
+\cf5 //only list chunks that have a value < -30 in the 10th bin of the AvgSpec\cf2 \
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\ql\qnatural\pardirnatural
+\cf2 m.segList.do\{\cf3 arg\cf2  meapChunk, i; \
+	if(meapChunk.featDict[\cf6 \\AvgSpec\cf2 ][10]<(30.neg), \{meapChunk.segTime.postln\})\
+\};
+\f1\fs24 \
+\pard\pardeftab560\ql\qnatural
+\cf2 \
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\ql\qnatural
+
+\f0\b \cf2 segList\
+\
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\ql\qnatural
+
+\f1\b0 \cf2 Contains the MEAPChunk segments in their original order.  A segList is created when an EDL file or FEAT file are loaded, but one can also simply load the segmented file
+\f0\b \
+
+\f1\b0 \
+\
+\pard\pardeftab560\ql\qnatural
+
+\f2\fs18 \cf2 m = \cf3 MEAPSoft\cf2 .new;		\cf4 //create a new MEAPSoft object\cf2 \
+m.loadSEG;			\cf5 //load a MEAPSoft SEGmentation file\cf2 \
+\
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\ql\qnatural\pardirnatural
+\cf2 m.segList.do\{\cf3 arg\cf2  meapChunk, i; (meapChunk.segTime.asString+meapChunk.segLength.asString).postln\};  \cf5 //list the segTime and segLength for all chunks
+\f1\fs24 \cf2 \
+\pard\pardeftab560\ql\qnatural
+\cf2 \
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\ql\qnatural
+
+\f0\b \cf2 fileNames
+\f1\b0 \
+\
+Contains a list of file names used by the MEAP Object\
+\pard\pardeftab560\ql\qnatural
+\cf2 \
+
+\f2\fs18 m = \cf3 MEAPSoft\cf2 .new;		\cf4 //create a new MEAPSoft object\cf2 \
+m.loadSEG;			\cf5 //load a MEAPSoft SEGmentation file\cf2 \
+m.fileNames.postln;	\cf5 //shows all of the files used in the MEAPSoft Object (usually it is just one)\cf2 \
+
+\f1\fs24 \
+\
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\ql\qnatural
+
+\f0\b \cf2 \ul Some Examples:
+\f1\b0 \ulnone \
+\pard\pardeftab560\ql\qnatural
+\cf2 \
+
+\f2\fs18 \cf5 //create a MEAPSoft Object and load the data from some MEAP files\cf2 \
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\ql\qnatural\pardirnatural
+\cf2 m = \cf3 MEAPSoft\cf2 .new;\
+m.loadEDL;\
+m.loadFEAT;\
+\
+\pard\pardeftab560\ql\qnatural
+\cf5 //load the files used by the MEAP object into a buffer Dictionary\cf2 \
+b=\cf3 Dictionary\cf2 .new;\
+m.fileNames.do\{\cf3 arg\cf2  name;\
+	b.add(name -> \cf3 Buffer\cf2 .read(s, name));\
+\}\
+\
+\cf5 //load the SynthDef to play back the stuff\cf2 \
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\ql\qnatural
+\cf3 SynthDef\cf2 (\cf7 "playMEAP"\cf2 , \{ \cf3 arg\cf2  out=0,bufnum=0,startTime,length;\
+	\cf3 var\cf2  env;\
+	\
+	env = \cf3 EnvGen\cf2 .kr(\cf3 Env\cf2 ([0,1,1,0],[0.01,length-0.02,0.01]),doneAction:2);\
+	\cf3 Out\cf2 .ar(out,\
+		\cf3 PlayBuf\cf2 .ar(1, bufnum, \cf3 BufRateScale\cf2 .kr(bufnum), 1, startTime*\cf3 BufSampleRate\cf2 .kr(bufnum))*env\
+	)\
+\}).load(s);\
+\pard\pardeftab560\ql\qnatural
+\cf2 \
+\cf5 //upward motion by pitch - this is especially scary with voices\cf2 \
+\
+\cf3 Routine\cf2 (\{\
+	m.featDict[\cf6 \\AvgPitchSimple\cf2 ].do\{\cf3 arg\cf2  meapChunk; \
+		meapChunk.featDict[\cf6 \\AvgPitchSimple\cf2 ].postln;\
+		\cf3 Synth\cf2 (\cf7 "playMEAP"\cf2 ,[\cf6 \\out\cf2 , 0, \cf6 \\bufnum\cf2 , b[meapChunk.fileName], \cf6 \\startTime\cf2 , meapChunk.segTime, \cf6 \\length\cf2 , meapChunk.segLength]);\
+		meapChunk.segLength.wait; \
+	\};\
+\}).play;\
+\
+\cf5 //do the same thing but have the grains overlapping\cf2 \
+\
+\pard\pardeftab560\ql\qnatural
+\cf8 Routine\cf0 (\{\
+	m.featDict[\cf9 \\AvgPitchSimple\cf0 ].do\{\cf8 arg\cf0  meapChunk; \
+		meapChunk.featDict[\cf9 \\AvgPitchSimple\cf0 ].postln;\
+		\cf8 Synth\cf0 (\cf10 "playMEAP"\cf0 ,[\cf9 \\out\cf0 , 0, \cf9 \\bufnum\cf0 , b[meapChunk.fileName], \cf9 \\startTime\cf0 , meapChunk.segTime, \cf9 \\length\cf0 , meapChunk.segLength]);\
+		(meapChunk.segLength/(rrand(4.0,8.0))).wait; \
+	\};\
+\}).play;\cf2 \
+\
+\pard\pardeftab560\ql\qnatural
+\cf5 //arpeggios - well kind of\cf2 \
+(\
+	\cf3 var\cf2  meapChunk;\
+	\
+	\cf3 Routine\cf2 (\{\
+		4.do\{\
+			(10..13).do\{\cf3 arg\cf2  i1;\
+				4.do\{\cf3 arg\cf2  i2;\
+					meapChunk=m.featDict[\cf6 \\AvgPitchSimple\cf2 ][(i1+((m.featDict[\cf6 \\AvgPitchSimple\cf2 ].size)*(i2/4))).floor.asInteger];\
+					meapChunk.featDict[\cf6 \\AvgPitchSimple\cf2 ].postln;\
+					\cf3 Synth\cf2 (\cf7 "playMEAP"\cf2 ,[\cf6 \\out\cf2 , 0, \cf6 \\bufnum\cf2 , b[meapChunk.fileName], \cf6 \\startTime\cf2 , meapChunk.segTime, \cf6 \\length\cf2 , meapChunk.segLength]);\
+					meapChunk.segLength.wait; \
+				\}\
+			\}\
+		\}\
+	\}).play;\
+)\
+\
+\cf5 //play through an EDL file\cf2 \
+\
+\cf3 Routine\cf2 (\{\
+	m.edlList.do\{\cf3 arg\cf2  meapChunk; \
+		\cf3 Synth\cf2 (\cf7 "playMEAP"\cf2 ,[\cf6 \\out\cf2 , 0, \cf6 \\bufnum\cf2 , b[meapChunk.fileName], \cf6 \\startTime\cf2 , meapChunk.segTime, \cf6 \\length\cf2 , meapChunk.segLength]);\
+		meapChunk.segLength.wait; \
+	\};\
+\}).play;\
+\
+\cf5 //ChunkLength gets smaller\cf2 \
+\cf3 Routine\cf2 (\{\
+	m.featDict[\cf6 \\ChunkLength\cf2 ].reverseDo\{\cf3 arg\cf2  meapChunk; \
+		meapChunk.featDict[\cf6 \\ChunkLength\cf2 ].postln;\
+		\cf3 Synth\cf2 (\cf7 "playMEAP"\cf2 ,[\cf6 \\out\cf2 , 0, \cf6 \\bufnum\cf2 , b[meapChunk.fileName], \cf6 \\startTime\cf2 , meapChunk.segTime, \cf6 \\length\cf2 , meapChunk.segLength]);\
+		meapChunk.segLength.wait; \
+	\};\
+\}).play;\
+\
+\cf5 //scramble a segment file and play it back\cf2 \
+\
+a=m.segList.scramble;\
+\
+\pard\pardeftab560\ql\qnatural
+\cf3 Routine\cf2 (\{\
+	a.do\{\cf3 arg\cf2  meapChunk;\
+		\cf3 Synth\cf2 (\cf7 "playMEAP"\cf2 ,[\cf6 \\out\cf2 , 0, \cf6 \\bufnum\cf2 , b[meapChunk.fileName], \cf6 \\startTime\cf2 , meapChunk.segTime, \cf6 \\length\cf2 , meapChunk.segLength]);\
+		meapChunk.segLength.wait; \
+	\};\
+\}).play;
+\f1\fs24 \
+}
