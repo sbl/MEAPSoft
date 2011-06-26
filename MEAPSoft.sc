@@ -81,59 +81,66 @@ MEAPSoft {
 		^fileName
 	}
 	
-	loadEDL {
-		var chunkTemp, line, temp, floats, floatCount, fileName, foundChunk, file;
-	
-		CocoaDialog.getPaths({ arg paths;
-			paths.do({ arg p;
+	openEDLDialog {
+		Dialog.getPaths { |paths|
+			paths.do { |p| this.loadEDL(p) };	
+		}	
+	}
 
-				file = File(p, "r");
-				
-				file.reset;
-				2.do{line = file.getLine};
-				while({line!=nil},{
-					
-					floats = List.new;
-					
-					line.asArray;
-					
-					floatCount = 0;
-					line = line.split($ );
-					//floats.add(line.removeAt(0));
-//					line.do{|x| if(x.asFloat.asString.size>4, {floats.add(x); floatCount = floatCount+1}, {if (floatCount==0,{strings.add(x)})})};
-					
-					floats = [line[0],line[2],line[3]];
-					
-					fileName = this.getFileName(line[1]);
-					
-					chunkTemp = MEAPChunk(fileName.asSymbol, floats[1].asFloat, floats[2].asFloat);
-					chunkTemp.edlTimes.add(edlList.size.asInteger -> floats[0].asFloat);
-					foundChunk = this.findChunk(chunkTemp);
-					if(foundChunk==nil,{
-						chunkList.add(chunkTemp);
-						edlList.add(chunkTemp);
-					},{
-						foundChunk.edlTimes.add(edlList.size.asInteger -> floats[0].asFloat);
-						edlList.add(foundChunk);
-					});
-					line = file.getLine;
+	loadEDL { |path|
+		var chunkTemp, line, temp, floats, floatCount, fileName, foundChunk, file;
+
+		if(path.isNil.not) {
+			file = File(path, "r");
+
+			file.reset;
+			2.do{line = file.getLine};
+			while({line!=nil},{
+
+				floats = List.new;
+
+				line.asArray;
+
+				floatCount = 0;
+				line = line.split($ );
+				//floats.add(line.removeAt(0));
+				//					line.do{|x| if(x.asFloat.asString.size>4, {floats.add(x); floatCount = floatCount+1}, {if (floatCount==0,{strings.add(x)})})};
+
+				floats = [line[0],line[2],line[3]];
+
+				fileName = this.getFileName(line[1]);
+
+				chunkTemp = MEAPChunk(fileName.asSymbol, floats[1].asFloat, floats[2].asFloat);
+				chunkTemp.edlTimes.add(edlList.size.asInteger -> floats[0].asFloat);
+				foundChunk = this.findChunk(chunkTemp);
+				if(foundChunk==nil,{
+					chunkList.add(chunkTemp);
+					edlList.add(chunkTemp);
+				},{
+					foundChunk.edlTimes.add(edlList.size.asInteger -> floats[0].asFloat);
+					edlList.add(foundChunk);
 				});
-				this.createSegList;
-				file.close;
-				"EDL Loaded".postln;
-			})
-		},{
-			"cancelled".postln;
-		}, 1);
+				line = file.getLine;
+			});
+			this.createSegList;
+			file.close;
+			"EDL Loaded".postln;
+		} {
+			"Please specify a MEAPSoft EDL file".error;
+		};
 	}
 	
-	loadSEG {
+	openSEGDialog {
+		Dialog.getPaths { |paths|
+			paths.do { |p| this.loadSEG(p) };	
+		}	
+	}
+
+	loadSEG { |path|
 		var chunkTemp, foundChunk, floats, fileName, line, file;
 		
-		CocoaDialog.getPaths({ arg paths;
-			paths.do({ arg p;
-
-				file = File(p, "r");
+		if(path.isNil.not) {
+				file = File(path, "r");
 				
 				file.reset;
 				3.do{line = file.getLine};
@@ -159,81 +166,85 @@ MEAPSoft {
 				this.createSegList;
 				file.close;
 				"SEG Loaded".postln;
-			})
-		},{
-			"cancelled".postln;
-		}, 1);
-	
+		} {
+			"Please specify a MEAPSoft SEG file".error;
+		};
 	}
 	
-	loadFEAT {
+	openFEATDialog {
+		Dialog.getPaths { |paths|
+			paths.do { |p| this.loadFEAT(p) };	
+		}	
+	}
+	
+	loadFEAT { | path |
 		var chunkTemp, foundChunk, floats, line, file, whereYat, numVals, segTime, segLength, fileName, featNums;
 		
-		CocoaDialog.getPaths({ arg paths;
-			paths.do({ arg p;
-				
-				//get the features used
-				file = File(p, "r");
-				
-				2.do{line = file.getLine};
+		if(path.isNil.not) {
+
+			//get the features used
+			file = File(path, "r");
+
+			2.do {line = file.getLine};
+
+			line = line.split($ );
+			line = line.drop(2);
+			line.do{arg item, i;
+				whereYat = line[i].findBackwards(".");
+				if(whereYat !=nil,{
+					line.put(i,line[i].drop(whereYat+1));
+				},{
+					line.removeAt(i);
+				})
+			};
+			featInFileList = List.new;
+			line.do{arg item, i;
+				whereYat = line[i].find("(");
+				numVals = line[i].copyRange(whereYat+1, line[i].find(")")).asInteger;
+				featInFileList.add([line[i].keep(whereYat), numVals]);
+			};
+
+			featInFileList.size;
+			line = file.getLine(32767);
+			while({line!=nil},{
+
 				line = line.split($ );
-				line = line.drop(2);
-				line.do{arg item, i;
-					whereYat = line[i].findBackwards(".");
-					if(whereYat !=nil,{
-						line.put(i,line[i].drop(whereYat+1));
-					},{
-						line.removeAt(i);
-					})
+
+				fileName = this.getFileName(line.removeAt(0));
+
+				this.addBufName(fileName);
+
+				segTime = line.removeAt(0).asFloat;
+				segLength = line.removeAt(0).asFloat;
+
+				chunkTemp = MEAPChunk.new(fileName.asSymbol, segTime, segLength);
+
+				featInFileList.do{arg item, i;
+					featNums = line.keep(item[1].asInteger).asFloat;
+					line = line.drop(item[1].asInteger);
+
+					if(featNums.size == 1, {featNums = featNums[0]});
+
+					chunkTemp.featDict.add(item[0].asSymbol -> featNums);
 				};
-				featInFileList = List.new;
-				line.do{arg item, i;
-					whereYat = line[i].find("(");
-					numVals = line[i].copyRange(whereYat+1, line[i].find(")")).asInteger;
-					featInFileList.add([line[i].keep(whereYat), numVals]);
-				};
-				featInFileList.size;
-				line = file.getLine(32767);
-				while({line!=nil},{
-					 
-					line = line.split($ );
-					
-					fileName = this.getFileName(line.removeAt(0));
-					
-					this.addBufName(fileName);
-					
-					segTime = line.removeAt(0).asFloat;
-					segLength = line.removeAt(0).asFloat;
-					
-					chunkTemp = MEAPChunk.new(fileName.asSymbol, segTime, segLength);
-					
-					featInFileList.do{arg item, i;
-						featNums = line.keep(item[1].asInteger).asFloat;
-						line = line.drop(item[1].asInteger);
-						
-						if(featNums.size == 1, {featNums = featNums[0]});
-						
-						chunkTemp.featDict.add(item[0].asSymbol -> featNums);
-					};
-					
-					chunkTemp.featDict;
-					
-					foundChunk = this.findChunk(chunkTemp);
-					if(foundChunk==nil,{
-						chunkList.add(chunkTemp);
-					},{
-						foundChunk.featDict = chunkTemp.featDict;
-					});
-					
-					line = file.getLine(32767);
+
+				chunkTemp.featDict;
+
+				foundChunk = this.findChunk(chunkTemp);
+				if(foundChunk==nil,{
+					chunkList.add(chunkTemp);
+				},{
+					foundChunk.featDict = chunkTemp.featDict;
 				});
-				this.createSegList;
-				this.fillFeatDict;
-				file.close;
-				"FEAT Loaded".postln;
-			})
-		},{
-			"cancelled".postln;
-		}, 1);
+
+				line = file.getLine(32767);
+			});
+			this.createSegList;
+			this.fillFeatDict;
+			file.close;
+			"FEAT Loaded".postln;
+		} {
+			"Please specify a MEAPSoft FEAT file".error;
+		}
 	}
 }
